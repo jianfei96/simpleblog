@@ -7,8 +7,8 @@
    - Login
       - username: admin
       - password: admin
-- source code: [sourcecode.zip](https://share.lixian.download/file/sourcecode.zip)
-- jar package: [Blog.jar](https://share.lixian.download/file/Blog.jar)
+- source code: [sourcecode.zip](https://github.com/jianfei96/simpleblog/archive/v0.3.zip)
+- jar package: [Blog.jar](https://github.com/jianfei96/simpleblog/releases/download/v0.3/Blog.jar)
 
 ## 詳細
 
