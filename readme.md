@@ -25,7 +25,7 @@
 
 ### File structure
 
-#### src/main/java:
+#### java:
    - SpringBoot main
       - BlogApplication.java
    - MVC
@@ -40,7 +40,7 @@
    - 属性
       - properties
 
-#### src/main/resources:
+#### resources:
    - 静的リソース
       - static
    - テンプレート
