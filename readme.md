@@ -1,5 +1,5 @@
 # 自作アプリ説明
-[toc]
+
 ## Links
 
 - Demo site: 
