@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+  <head>
+
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="description" content="">
+    <meta name="author" content="">
+
+    <title>Simple Blog Post</title>
+
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+	<script src="/webjars/jquery/3.5.1/jquery.min.js"></script>
+	<!-- <script src="/webjars/bootstrap/4.5.3/js/bootstrap.min.js"></script> -->
+	<link rel="stylesheet" href="/webjars/bootstrap/4.5.3/css/bootstrap.min.css" />
+	<script src="/webjars/prism/1.16.0/prism.js"></script>
+	<link rel="stylesheet" href="/webjars/prism/1.16.0/themes/prism-tomorrow.css" />
+	<link rel="stylesheet" href="https://raw.githubusercontent.com/simonlc/Markdown-CSS/master/markdown.css" />
+    <script>
+          function replay(obj1,obj2){
+        	  document.getElementById('preCid').value=obj1;
+        	  document.getElementById('content').placeholder='@'+obj2;
+        	  document.getElementById('content').autofocus="autofocus";
+        	  window.location.hash = "#comment";
+          }
+    </script>
+    <style type="text/css">
+    #blog img { 
+        width: 100%;
+    }
+    </style>
+  </head>
+
+  <body>
+
+    <!-- Navigation -->
+    <div th:replace="layout :: header(tab = 'home')"></div>
+
+    <!-- Page Content -->
+    <div class="container">
+
+      <div class="row">
+
+        <!-- Post Content Column -->
+        <div class="col-lg-8" >
+
+          <!-- Title -->
+          <h1 class="mt-4" th:text="${post.title}">Post Title</h1>
+
+          <!-- Author -->
+          <p class="lead">
+            
+<!--             <a href="#">Start Bootstrap</a> -->
+          </p>
+
+          <hr>
+
+          <!-- Date/Time -->
+          <p th:text="'Posted on&nbsp;&nbsp;'+${post.date}+'&nbsp;&nbsp;'+${post.time}">Posted on January 1, 2018 at 12:00 PM</p>
+
+          <hr>
+
+          <!-- Preview Image -->
+          <img class="img-fluid rounded" src="http://placehold.it/900x300" th:src="'/files/'+${post.image}" alt="" width="100%">
+
+          
+
+          <!-- Post Content -->
+          <!--  <p class="lead" th:each="content,stat : ${contents}" th:text="${content}" th:class="${stat.first} ? lead : ''">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Ducimus, vero, obcaecati, aut, error quam sapiente nemo saepe quibusdam sit excepturi nam quia corporis eligendi eos magni recusandae laborum minus inventore?</p> -->
+          <div id="blog"><p th:utext = "${html}"></div>
+
+          <hr>
+          <div id="comment"></div>
+			
+          <!-- Comments Form -->
+          <div class="card my-4">
+            <h5 class="card-header">Leave a Comment:</h5>
+            <div class="card-body">
+              <form th:action="@{/submitComment}" th:object="${comment}" method="post" id="commentForm">
+                <div class="form-group">
+                  <textarea class="form-control" rows="3" placeholder="Comment" th:field="*{content}" required id="content"></textarea>
+                </div>
+                <div class="form-group">
+                  <label for="commenter">UserName*：</label><input type="text" class="form-control" placeholder="User Name" th:field="*{commenterName}" required />
+                </div>
+                <div class="form-group">
+                  <label for="mail">Email*：</label><input type="email" class="form-control" placeholder="Email" th:field="*{commenterEmail}" required />
+                </div>
+                <input type="hidden" th:field="*{pid}" th:value="${post.pid}" />
+                <input type="hidden" th:field="*{preCid}"  id="preCid">
+<!-- 				<input type="text" th:field="*{preCid}"  id="preCid" /> -->
+                <button type="submit" class="btn btn-dark" role="button">Submit</button>
+              </form>
+            </div>
+          </div>
+
+          <!-- Single Comment -->
+          <div class="media mb-4" th:each="comment,stat : ${commentList}">
+            <img class="d-flex mr-3 rounded-circle" src="http://placehold.it/50x50" th:src="${comment.avatar}" alt="">
+            <div class="media-body">
+              <h5 class="mt-0" th:if="${loginStat == 1}" th:utext="${comment.commenterName}+'&nbsp;&nbsp;<small>'+${comment.commenterEmail}+'</small>'">Commenter Name</h5>
+              <h5 class="mt-0" th:if="${loginStat != 1}" th:text="${comment.commenterName}">Commenter Name</h5>
+              <b class="text-muted" th:if="${comment.preCommenterName != null}"  th:text="'@'+${comment.preCommenterName}"></b><br>
+              <i class="text-muted" th:if="${comment.preContent != null}" th:text="${comment.preContent}"></i>
+              <p th:text="|${comment.content}|"></p>
+            <a href="javascript:void(0)"  th:onclick="javascript:replay([[${comment.cid}]],[[${comment.commenterName}]]);">reply</a>
+            <a th:if="${loginStat == 1}" th:href="@{/deleteComment?pid={pid}&cid={cid}(pid=${post.pid},cid=${comment.cid})}">delete</a>
+            </div>
+          </div>
+          
+          
+
+          <!-- Comment with nested comments -->
+         <div class="media mb-4" >
+          </div>
+
+        </div>
+
+        <!-- Sidebar Widgets Column -->
+        <div class="col-md-4">
+
+          <!-- Search Widget -->
+          <div th:replace="layout :: SearchWidget"></div>
+
+          <!-- Categories Widget -->
+<!--           <div class="card my-4"> -->
+<!--             <h5 class="card-header">Categories</h5> -->
+<!--             <div class="card-body"> -->
+<!--               <div class="row"> -->
+<!--                 <div class="col-lg-6"> -->
+<!--                   <ul class="list-unstyled mb-0"> -->
+<!--                     <li> -->
+<!--                       <a href="#">Web Design</a> -->
+<!--                     </li> -->
+<!--                     <li> -->
+<!--                       <a href="#">HTML</a> -->
+<!--                     </li> -->
+<!--                     <li> -->
+<!--                       <a href="#">Freebies</a> -->
+<!--                     </li> -->
+<!--                   </ul> -->
+<!--                 </div> -->
+<!--                 <div class="col-lg-6"> -->
+<!--                   <ul class="list-unstyled mb-0"> -->
+<!--                     <li> -->
+<!--                       <a href="#">JavaScript</a> -->
+<!--                     </li> -->
+<!--                     <li> -->
+<!--                       <a href="#">CSS</a> -->
+<!--                     </li> -->
+<!--                     <li> -->
+<!--                       <a href="#">Tutorials</a> -->
+<!--                     </li> -->
+<!--                   </ul> -->
+<!--                 </div> -->
+<!--               </div> -->
+<!--             </div> -->
+<!--           </div> -->
+
+          <!-- Side Widget -->
+          <<div th:replace="layout :: SideWidget"></div>
+
+        </div>
+
+      </div>
+      <!-- /.row -->
+
+    </div>
+    <!-- /.container -->
+
+    <!-- Footer -->
+    <div th:replace="layout :: footer"></div>
+
+    <!-- Bootstrap core JavaScript -->
+    
+  </body>
+
+</html>

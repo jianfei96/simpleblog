@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <script src="/webjars/jquery/3.5.1/jquery.min.js"></script>
+	<script src="/webjars/bootstrap/4.5.3/js/bootstrap.min.js"></script>
+	<link rel="stylesheet" href="/webjars/bootstrap/4.5.3/css/bootstrap.min.css" />
+	
+	<link rel="stylesheet" href="webjars/bootstrap/4.1.0/css/bootstrap.min.css" />
+    <title>Post List</title>
+    <script>  
+        $(function(){  
+        	
+            function initTableCheckbox() {  
+                 var $thr = $('table thead tr');  
+                /*“全选/反选”复选框*/  
+                 var $checkAll = $thr.find('input');  
+                $checkAll.click(function(event){  
+                    /*将所有行的选中状态设成全选框的选中状态*/  
+                    $tbr.find('input').prop('checked',$(this).prop('checked'));  
+                    /*并调整所有选中行的CSS样式*/  
+                    if ($(this).prop('checked')) {  
+                        $tbr.find('input').parent().parent().addClass('table-success');  
+                    } else{  
+                        $tbr.find('input').parent().parent().removeClass('table-success');  
+                    }  
+                    /*阻止向上冒泡，以防再次触发点击操作*/  
+                    event.stopPropagation();  
+                });  
+                 /*点击全选框所在单元格时也触发全选框的点击操作*/  
+                $checkAll.parent().click(function(){  
+                    $(this).find('input').click();  
+                });  
+                var $tbr = $('table tbody tr');  
+                /*点击每一行的选中复选框时*/  
+                $tbr.find('input').click(function(event){  
+                    /*调整选中行的CSS样式*/  
+                    if ($(this).prop('checked')) {  
+                    	$(this).parent().parent().addClass('table-success');  
+                 } else{  
+                	    $(this).parent().parent().removeClass('table-success');  
+                 } 
+                    /*如果已经被选中行的行数等于表格的数据行数，将全选框设为选中状态，否则设为未选中状态*/  
+                     $checkAll.prop('checked',$tbr.find('input:checked').length == $tbr.length ? true : false);  
+                    /*阻止向上冒泡，以防再次触发点击操作*/  
+                    event.stopPropagation();  
+                });  
+                /*点击每一行时也触发该行的选中操作*/  
+                $tbr.click(function(){  
+                    $(this).find('input').click();
+                    if ($(this).find('input').prop('checked')) {  
+                    	$(this).addClass('table-success');  
+                 } else{  
+                	    $(this).removeClass('table-success');  
+                 } 
+                });
+            }
+            initTableCheckbox();  
+            
+        }); 
+        
+        </script>   
+	<style>
+	a{color:DimGray;}
+	a:hover {color:black;}
+	</style>
+	<script th:inline="javascript">
+// 	function deletePost() {
+		
+// 		var queryString = $('#myFormId').formSerialize();
+// 		document.write(queryString);
+		
+
+// 	    if (queryString != '') {
+// 	    	var url = '/deletePost?'+queryString;
+// 	    	$("#content").load(url);
+// 	    }else{
+// 	    	alert("XXXX");
+// 	    }
+
+	    
+//	}
+//	$("#deleteButton").click(function(){
+//		  var queryString = $('#myFormId').formSerialize();
+//		  var url1 = '/deletePost?'+queryString;
+//	      $('#content').load(url1+' '+'#content');
+//	      $('#content').load("/postList"+' '+'#content');
+//	      var url = "/postList?page="+[[${activePage}]];
+//	      $('#content').load(url+' '+"#content");
+//  	}
+	
+// 	$(document).ready(function(){
+//		  $('#myFormId').ajaxForm();
+// 		  $("#deleteButton").click(function(){
+// 			  var queryString = $('#myFormId').formSerialize();
+// 			  var url1 = '/deletePost?'+queryString;
+// 		      $('#content').load(url1+' '+'#content');
+// 		      var url = "/postList?page="+[[${activePage}]];
+// 		      $('#content').load(url+' '+"#content");
+//			  document.getElementById("myFormId").action="/deletePost";
+//			  $('#myFormId').submit(function() { 
+//				    // submit the form 
+//				    $(this).ajaxSubmit(); 
+//				    // return false to prevent normal browser submit and page navigation 
+//				    return false; 
+//				});
+//			  $("#deleteButton").click(function(){
+//	                 $.ajax({    
+//	                    type:'post',        
+//	                    url:'/deletePost',    
+//	                    data:$("#myFormId").serialize(),    
+//	                    cache:false,    
+//	                    dataType:'json',    
+//	                    success:function(data){   
+//	                        alert("请求成功");
+//	                    }    
+//	                });    
+//	            });
+//		      var url = "/postList?page="+[[${activePage}]]};
+//		      $('#content').load(url+' '+"#content");
+// 		  })
+// 		})
+	
+	</script>
+</head>
+<body>
+    <div th:replace="layout :: header(tab = 'manager')"></div>
+    <div class="container" id="content" th:fragment="content">
+    
+    <br>
+    <form action="#"  th:object="${posts}" method="POST" id="myFormId">
+    <button type="submit" class="btn btn-dark" role="button" th:formaction="@{/addPost}">Add</button>
+    <button type="submit" class="btn btn-dark" role="button" th:formaction="@{/updatePost}">Edit</button>
+    <button type="submit" class="btn btn-danger" role="button" th:formaction="@{/deletePost}">Delete</button>
+<!-- 	<button class="btn btn-default" id="deleteButton">删除</button> -->
+    <div class="table-responsive">
+    <table class="table table-hover" >
+    <thead>
+    <tr>
+    <th ><input type="checkbox" id="checkAll" name="checkAll" /></th>
+    <th >Post ID</th>
+    <th >Title</th>
+    <th >Date</th>
+    <th >Time</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr th:each="post,stat : ${postList}">
+     <td><input type="checkbox" th:field = "*{cheakedPosts}" th:value="${post.pid}" th:id="${post.pid}" ></input></td> 
+     <td th:text="${post.pid}" ></td>
+     <td  ><a th:href="@{post/{id}.html(id=${post.pid})}" th:text="${post.title}" ></a></td>
+     <td th:text="${post.date}"></td>
+     <td th:text="${post.time}"></td>
+ 	</tr>
+ 	</tbody>
+ 	</table>
+ 	</div>
+ 	</form>
+ 	<ul class="pagination">
+    <li class="page-item disabled" th:if="${activePage == 1}" ><a class="page-link" href="#">&laquo;</a></li>
+    <li class="page-item" th:if="${activePage != 1}"><a class="page-link" th:href="@{/postList?page={page}(page=(${activePage - 1}))}">&laquo;</a></li>
+    <li class="page-item" th:each="i : ${#numbers.sequence(1,length)}" th:id="'page'+${i}" th:if="${i < activePage}"><a class="page-link" href="#" th:href="@{/postList?page={page}(page=${i})}" th:text="${i}" ></a></li>
+    <li class="page-item active" th:each="i : ${#numbers.sequence(1,length)}" th:id="'page'+${i}" th:if="${i == activePage}" ><a class="page-link" href="#" th:href="@{/postList?page={page}(page=${i})}" th:text="${i}" ></a></li>
+    <li class="page-item" th:each="i : ${#numbers.sequence(1,length)}" th:id="'page'+${i}" th:if="${i > activePage}"><a class="page-link" href="#" th:href="@{/postList?page={page}(page=${i})}" th:text="${i}" ></a></li>
+    <li class="page-item disabled" th:if="${activePage == length}"><a class="page-link" href="#">&raquo;</a></li>
+    <li class="page-item" th:if="${activePage != length}"><a class="page-link" href="#" th:href="@{/postList?page={page}(page=(${activePage + 1}))}">&raquo;</a></li>
+	</ul>
+	<br>
+ 	</div>
+ 	
+ 	<div th:replace="layout :: footer"></div>
+</body>
+</html>

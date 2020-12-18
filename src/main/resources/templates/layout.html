@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head>
+
+<meta charset="utf-8">
+<meta name="viewport"
+	content="width=device-width, initial-scale=1, shrink-to-fit=no">
+<meta name="description" content="">
+<meta name="author" content="">
+
+
+<script src="/webjars/jquery/3.5.1/jquery.min.js"></script>
+<script src="/webjars/bootstrap/4.5.3/js/bootstrap.min.js"></script>
+<link rel="stylesheet" href="/webjars/bootstrap/4.5.3/css/bootstrap.min.css" />
+<title>Insert title here</title>
+</head>
+<body>
+	<nav th:fragment="header (tab)"
+		class="navbar navbar-expand-lg navbar-dark bg-dark fixed-top">
+		<style type="text/css">
+body {
+	padding-top: 54px;
+}
+
+@media ( min-width : 992px) {
+	body {
+		padding-top: 56px;
+	}
+}
+</style>
+		<div class="container">
+			<a class="navbar-brand" href="/">Simple Blog</a>
+			<button class="navbar-toggler" type="button" data-toggle="collapse"
+				data-target="#navbarResponsive" aria-controls="navbarResponsive"
+				aria-expanded="false" aria-label="Toggle navigation">
+				<span class="navbar-toggler-icon"></span>
+			</button>
+			<div class="collapse navbar-collapse" id="navbarResponsive">
+				<ul class="navbar-nav ml-auto">
+					<li class="nav-item"
+						th:class="${tab eq 'home'} ? 'nav-item active' : nav-item"><a
+						class="nav-link" href="/">Home</a></li>
+<!-- 					<li class="nav-item"><a class="nav-link" th:class="${tab eq 'about'} ? 'nav-item active' : nav-item" href="/about">About</a></li> -->
+					<li class="nav-item"
+						th:class="${tab eq 'manager'} ? 'nav-item active' : nav-item">
+						<a class="nav-link" href="/manager">Manager</a>
+					</li>
+				</ul>
+			</div>
+		</div>
+	</nav>
+
+	<footer th:fragment="footer" class="py-5 bg-dark " id="footer">
+		<style>
+html {
+	position: relative;
+	min-height: 100%;
+}
+
+body {
+	margin-bottom: 100px;
+}
+
+footer {
+	position: absolute;
+	bottom: 0;
+	width: 100%;
+	height: 100px;
+}
+</style>
+		<div  class="container">
+			<p class="m-0 text-center text-white">Copyright &copy; Simple
+				Blog 2018~2020</p>
+		</div>
+		<!-- /.container -->
+	</footer>
+	
+	<div th:fragment="SearchWidget" class="card my-4">
+            <h5 class="card-header">Search</h5>
+            <div class="card-body">
+            <form action="#" th:action="@{/search}">
+              <div class="input-group">
+                <input type="text" class="form-control" name="keywords" th:value="${keywords}" placeholder="Search for...">
+                <span class="input-group-btn">
+                  <input class="btn btn-secondary" type="submit" value="Go!" />
+                </span>
+              </div>
+              </form>
+            </div>
+          </div>
+          
+          <div th:fragment="SideWidget">
+          <div class="card my-4" th:if="${loginStat == 1}">
+            <h5 class="card-header">User Flag</h5>
+            <div class="card-body">
+              	Welcome,Administrator!
+            </div>
+          </div>
+          <div class="card my-4" th:if="${loginStat != 1}">
+<!--             <h5 class="card-header">Side Widget</h5> -->
+			<h5 class="card-header">Welcome!</h5>
+            <div class="card-body">
+              	Welcome to Simple Blog！
+            </div>
+          </div>
+		  </div>
+          
+          
+          
+</body>
+</html>

@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+    <script src="/webjars/jquery/3.5.1/jquery.min.js"></script>
+	<script src="/webjars/bootstrap/4.5.3/js/bootstrap.min.js"></script>
+	<link rel="stylesheet" href="/webjars/bootstrap/4.5.3/css/bootstrap.min.css" />
+    <title>Manager</title>
+</head>
+<body>
+    <div th:replace="layout :: header(tab = 'manager')"></div>
+    
+<!--      <h3 th:text="用户信息"></h3>
+    <p th:text="'用户名：'+${user.uname}"></p>
+    <p th:text="'昵&nbsp;&nbsp;&nbsp;称：'+${user.nickname}"></p>
+    <p th:text="'性&nbsp;&nbsp;&nbsp;别：'+${user.sex}"></p>
+    <p th:text="'生&nbsp;&nbsp;&nbsp;日：'+${user.birthday}"></p>
+    <p th:text="'邮&nbsp;&nbsp;&nbsp;件：'+${user.mail}"></p>-->
+    
+    <div class="container">
+    <br>
+    <div class="page-header"> 
+           <h3 th:text="'Welcome,Administrator:'+${user.nickname}">欢迎登录，亲爱的管理员！</h2>
+        </div> 
+    <br>
+    <table class="table table-striped">
+    <tr>
+    <th colspan="2">User Information</th>
+    </tr>
+    <tr>
+	<td>UserID：</td>
+    <td th:text="${user.id}"></td>
+    </tr>
+    <tr>
+	<td>UserName：</td>
+    <td th:text="${user.uname}"></td>
+    </tr>
+    <tr>
+    <td>NickName：</td>
+    <td th:text="${user.nickname}"></td>
+    </tr>
+    <tr>
+    <td>Sex：</td>
+    <td th:text="${user.sex}"></td>
+    </tr>
+    <tr>
+    <td>Birthday：</td>
+    <td th:text="${user.birthday}"></td>
+    </tr>
+    <tr>
+    <td>E-mail：</td>
+    <td th:text="${user.mail}"></td>
+    </tr>
+    
+	</table>
+	<a th:href="@{/updateUser}" class="btn btn-dark" role="button">Change User Information</a> 
+    <br><br>
+    <a th:href="@{/postList}" class="btn btn-dark" role="button">Post List</a>
+    <br><br>
+    <a th:href="@{/logout}" class="btn btn-dark" role="button">logout</a>
+    <br><br>
+    </div>
+    <div th:replace="layout :: footer"></div>
+</body>
+</html>
